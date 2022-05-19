@@ -1,0 +1,2 @@
+# segreti
+Segreti Password Manager
