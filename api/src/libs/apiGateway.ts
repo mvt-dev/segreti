@@ -6,8 +6,6 @@ export function httpResponse(statusCode: HttpStatus, body: string | unknown) {
     statusCode,
     headers: {
       'content-type': 'application/json'
-      // 'Access-Control-Allow-Origin': '*',
-      // 'Access-Control-Allow-Credentials': true
     },
     body: JSON.stringify(typeof body === 'string' ? { message: body } : body)
   }
