@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSecretStore } from '../stores'
+import { Item } from '../components'
 
 export function Secrets() {
   const { secrets, list } = useSecretStore()
@@ -14,28 +15,13 @@ export function Secrets() {
       <button type="button" onClick={() => navigate('/secret/new')}>
         Novo
       </button>
-      <table>
-        <tr>
-          <th>#ID</th>
-          <th>Username</th>
-          <th>Password</th>
-          <th>Ações</th>
-        </tr>
-        {secrets.map((secret) => (
-          <tr key={secret.id}>
-            <td>{secret.id}</td>
-            <td>{secret.username}</td>
-            <td>{secret.password}</td>
-            <td>
-              <button
-                type="button"
-                onClick={() => navigate(`/secret/${secret.id}`)}>
-                Editar
-              </button>
-            </td>
-          </tr>
-        ))}
-      </table>
+      {secrets.map((secret) => (
+        <Item
+          key={secret.username}
+          username={secret.username}
+          onEdit={() => navigate(`/secret/${secret.id}`)}
+        />
+      ))}
     </section>
   )
 }
