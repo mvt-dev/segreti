@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSecretStore } from '../stores'
+import { Input } from '../components'
 
 interface SecretData {
   username?: string
   password?: string
 }
+
 export function Secret() {
   const [secret, setSecret] = useState<SecretData | undefined>({})
   const { get, create, update, remove } = useSecretStore()
@@ -18,10 +20,10 @@ export function Secret() {
     }
   }, [id])
 
-  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function onChange({ name, value }: { name: string; value: string }) {
     setSecret((secret) => ({
       ...secret,
-      [e.target.name]: e.target.value
+      [name]: value
     }))
   }
 
@@ -62,19 +64,18 @@ export function Secret() {
   return (
     <form onSubmit={onSubmit}>
       <h1>Secret</h1>
-      <input
-        type="text"
+      <Input
+        label="Username"
         name="username"
-        placeholder="username"
+        value={secret?.username}
         onChange={onChange}
-        defaultValue={secret?.username}
       />
-      <input
-        type="password"
+      <Input
+        label="Password"
         name="password"
-        placeholder="password"
+        type="password"
+        value={secret?.password}
         onChange={onChange}
-        defaultValue={secret?.password}
       />
       <button type="submit">Confirmar</button>
       {id !== 'new' && (
