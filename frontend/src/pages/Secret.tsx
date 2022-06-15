@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSecretStore } from '../stores'
-import { Input } from '../components'
+import { Input, Button } from '../components'
 
 interface SecretData {
   username?: string
@@ -57,10 +57,6 @@ export function Secret() {
     }
   }
 
-  function onGoBack() {
-    navigate(-1)
-  }
-
   return (
     <form onSubmit={onSubmit}>
       <h1>Secret</h1>
@@ -77,15 +73,11 @@ export function Secret() {
         value={secret?.password}
         onChange={onChange}
       />
-      <button type="submit">Confirmar</button>
+      <Button label="Confirmar" type="submit" />
+      <Button label="Voltar" type="text" to="-1" />
       {id !== 'new' && (
-        <button type="button" onClick={onRemove}>
-          Remover
-        </button>
+        <Button label="Remover" type="outlined" onClick={onRemove} />
       )}
-      <button type="button" onClick={onGoBack}>
-        Voltar
-      </button>
     </form>
   )
 }

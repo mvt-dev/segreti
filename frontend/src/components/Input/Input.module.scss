@@ -7,6 +7,7 @@
   border-radius: $radius;
   padding: calc(20px + $padding-x) $padding-y $padding-x;
   margin: $margin-x 0;
+  transition: border 0.5s;
 
   &:focus-within {
     border: 2px solid rgba(255, 255, 255, 0.3);

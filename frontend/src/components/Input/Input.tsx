@@ -45,7 +45,6 @@ export function Input({
         value={text}
         type={type}
         onChange={onInputChange}
-        required
       />
       {label && <label htmlFor={name}>{label}</label>}
       {error && <span>{error}</span>}
