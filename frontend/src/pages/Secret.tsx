@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useSecretStore } from '../stores'
+import { useSecretStore, useNotificationStore } from '../stores'
 import { Input, Button } from '../components'
 
 interface SecretData {
@@ -13,6 +13,7 @@ export function Secret() {
   const { get, create, update, remove } = useSecretStore()
   const navigate = useNavigate()
   const { id } = useParams()
+  const { notify } = useNotificationStore()
 
   useEffect(() => {
     if (id !== 'new') {
@@ -35,25 +36,30 @@ export function Secret() {
           username: secret?.username || '',
           password: secret?.password || ''
         })
+        notify('success', 'Segredo criado com sucesso!')
       } else {
         await update({
           id: id || '',
           username: secret?.username || '',
           password: secret?.password || ''
         })
+        notify('success', 'Segredo atualizado com sucesso!')
       }
       navigate(-1)
     } catch (error) {
       console.error(error)
+      notify('error', 'Não foi possível salvar o segredo. Tente novamente.')
     }
   }
 
   async function onRemove() {
     try {
       await remove(id as string)
+      notify('success', 'Segredo removido com sucesso!')
       navigate(-1)
     } catch (error) {
       console.error(error)
+      notify('error', 'Não foi possível remover o segredo. Tente novamente.')
     }
   }
 
