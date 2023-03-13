@@ -8,7 +8,7 @@ const REGION = 'us-east-1'
 const serverlessConfiguration: AWS = {
   service: 'segreti-api',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild'],
+  plugins: ['serverless-offline', 'serverless-esbuild'],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
