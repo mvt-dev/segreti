@@ -5,7 +5,7 @@ import styles from './Input.module.scss'
 interface InputProps {
   name: string
   value?: string
-  type?: 'text' | 'password'
+  type?: 'text' | 'password' | 'email'
   label: string
   error?: string
   onChange: (props: { name: string; value: string }) => void

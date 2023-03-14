@@ -35,7 +35,10 @@ const serverlessConfiguration: AWS = {
               'dynamodb:UpdateItem',
               'dynamodb:DeleteItem'
             ],
-            Resource: { 'Fn::GetAtt': ['SecretTable', 'Arn'] }
+            Resource: [
+              { 'Fn::GetAtt': ['SecretTable', 'Arn'] },
+              { 'Fn::GetAtt': ['UserTable', 'Arn'] }
+            ]
           }
         ]
       }

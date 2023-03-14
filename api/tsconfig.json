@@ -10,6 +10,10 @@
     "outDir": "lib",
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts", "serverless.ts"],
   "exclude": [
@@ -18,6 +22,6 @@
     ".webpack/**/*",
     "_warmup/**/*",
     ".vscode/**/*",
-    "prettier.config.js",
-  ],
+    "prettier.config.js"
+  ]
 }
