@@ -6,7 +6,7 @@ export const userSignup = {
     {
       http: {
         method: 'post',
-        path: '/user',
+        path: '/user/signup',
         cors: true
       }
     }
