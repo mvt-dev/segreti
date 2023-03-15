@@ -1,7 +1,7 @@
 export const UserTable = {
   Type: 'AWS::DynamoDB::Table',
   Properties: {
-    TableName: 'user',
+    TableName: '${self:custom.userTableName}',
     AttributeDefinitions: [
       {
         AttributeName: 'id',

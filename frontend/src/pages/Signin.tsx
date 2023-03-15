@@ -3,15 +3,14 @@ import { useAuthStore, useNotificationStore } from '@/stores'
 import { Input, Button } from '@/components'
 
 interface FormData {
-  name?: string
   email?: string
   password?: string
 }
 
-export function Signup() {
+export function Signin() {
   const [form, setForm] = useState<FormData | undefined>({})
   const { notify } = useNotificationStore()
-  const { signup } = useAuthStore()
+  const { signin } = useAuthStore()
 
   function onChange({ name, value }: { name: string; value: string }) {
     setForm((form) => ({
@@ -23,12 +22,11 @@ export function Signup() {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     try {
-      await signup({
-        name: form?.name || '',
+      await signin({
         email: form?.email || '',
         password: form?.password || ''
       })
-      notify('success', 'Usuário criado com sucesso!')
+      notify('success', 'Usuário entrou com sucesso!')
     } catch (error) {
       console.error(error)
       notify('error', 'Não foi possível se inscrever. Tente novamente.')
@@ -37,8 +35,7 @@ export function Signup() {
 
   return (
     <form onSubmit={onSubmit}>
-      <h1>Cadastrar</h1>
-      <Input label="Nome" name="name" value={form?.name} onChange={onChange} />
+      <h1>Entrar</h1>
       <Input
         label="E-mail"
         name="email"
@@ -58,4 +55,4 @@ export function Signup() {
   )
 }
 
-export default Signup
+export default Signin

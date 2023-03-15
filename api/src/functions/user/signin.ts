@@ -7,7 +7,7 @@ import {
   jwtSign
 } from '../../libs'
 import { HttpStatus } from '../../types'
-import { getByEmail, create } from '../../db/user'
+import { getByEmail } from '../../db/user'
 
 export async function handler(
   event: APIGatewayProxyEvent
@@ -15,8 +15,7 @@ export async function handler(
   try {
     const data = httpRequestData(event)
 
-    const { error, name, email, password } = validate(data, {
-      name: validator.string().required(),
+    const { error, email, password } = validate(data, {
       email: validator.string().email().required(),
       password: validator.string().required()
     })
@@ -26,18 +25,17 @@ export async function handler(
       return httpResponse(HttpStatus.BAD_REQUEST, String(error))
     }
 
-    const exists = await getByEmail(email)
+    const user = await getByEmail(email)
 
-    if (exists) {
-      console.warn('User already exists')
-      return httpResponse(HttpStatus.CONFLICT, 'USER_EXISTS')
+    if (!user) {
+      console.warn('User not found')
+      return httpResponse(HttpStatus.UNAUTHORIZED, 'INVALID_EMAIL_PASS')
     }
 
-    const user = await create({
-      name,
-      email,
-      password
-    })
+    if (user.password !== password) {
+      console.warn('Invalid password')
+      return httpResponse(HttpStatus.UNAUTHORIZED, 'INVALID_EMAIL_PASS')
+    }
 
     const token = jwtSign({
       id: user.id,

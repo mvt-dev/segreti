@@ -4,8 +4,8 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
-    "dev": "sls offline",
-    "deploy": "sls deploy",
+    "dev": "sls offline --stage dev",
+    "deploy": "sls deploy --stage dev",
     "test": "jest",
     "lint": "eslint src/** --fix",
     "format": "prettier --write src/**"
@@ -17,12 +17,14 @@
     "@aws-sdk/client-dynamodb": "^3.99.0",
     "@aws-sdk/lib-dynamodb": "^3.99.0",
     "joi": "^17.6.0",
+    "jsonwebtoken": "^9.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",
     "@types/aws-lambda": "^8.10.71",
     "@types/jest": "^27.5.1",
+    "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^14.14.25",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",

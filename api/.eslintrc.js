@@ -11,5 +11,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   ignorePatterns: ['prettier.config.js'],
-  rules: {}
+  rules: {
+    'no-template-curly-in-string': 'off'
+  }
 }

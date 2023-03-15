@@ -58,7 +58,8 @@ const serverlessConfiguration: AWS = {
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10
-    }
+    },
+    userTableName: '${opt:stage}-segreti-user'
   }
 }
 
