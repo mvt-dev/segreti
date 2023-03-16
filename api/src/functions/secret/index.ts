@@ -1,4 +1,4 @@
-import { handlerPath } from '../../libs'
+import { handlerPath } from '../../helpers'
 
 export const secretList = {
   handler: `${handlerPath(__dirname)}/list.handler`,
@@ -10,7 +10,10 @@ export const secretList = {
         cors: true
       }
     }
-  ]
+  ],
+  environment: {
+    SECRET_TABLE: '${self:custom.secretTableName}'
+  }
 }
 
 export const secretGet = {
@@ -23,7 +26,10 @@ export const secretGet = {
         cors: true
       }
     }
-  ]
+  ],
+  environment: {
+    SECRET_TABLE: '${self:custom.secretTableName}'
+  }
 }
 
 export const secretCreate = {
@@ -36,7 +42,10 @@ export const secretCreate = {
         cors: true
       }
     }
-  ]
+  ],
+  environment: {
+    SECRET_TABLE: '${self:custom.secretTableName}'
+  }
 }
 
 export const secretUpdate = {
@@ -49,7 +58,10 @@ export const secretUpdate = {
         cors: true
       }
     }
-  ]
+  ],
+  environment: {
+    SECRET_TABLE: '${self:custom.secretTableName}'
+  }
 }
 
 export const secretRemove = {
@@ -62,5 +74,8 @@ export const secretRemove = {
         cors: true
       }
     }
-  ]
+  ],
+  environment: {
+    SECRET_TABLE: '${self:custom.secretTableName}'
+  }
 }

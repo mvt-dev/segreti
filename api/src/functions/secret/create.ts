@@ -1,27 +1,46 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-import { v4 as uuidv4 } from 'uuid'
-import { httpResponse, httpRequestData, validate, validator } from '../../libs'
-import { HttpStatus } from '../../types'
+import {
+  httpResponse,
+  httpRequestData,
+  validate,
+  validator,
+  isAuthorized
+} from '../../helpers'
+import { Errors, HttpStatus } from '../../types'
 import { create } from '../../db/secret'
 
 export async function handler(
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
-  const data = httpRequestData(event)
+  try {
+    const user = isAuthorized(event)
 
-  const { error, username, password } = validate(data, {
-    username: validator.string().required(),
-    password: validator.string().required()
-  })
+    const data = httpRequestData(event)
 
-  if (error) {
-    console.warn(error)
-    return httpResponse(HttpStatus.BAD_REQUEST, String(error))
+    const { error, fields, values } = validate(data, {
+      fields: validator.array().items(validator.string()).min(1).required(),
+      values: validator.array().items(validator.string()).min(1).required()
+    })
+
+    if (error) {
+      console.warn(error)
+      return httpResponse(HttpStatus.UNPROCESSABLE, String(error))
+    }
+
+    const secret = await create({
+      user: user.id,
+      ...fields.map((field: string, index: number) => ({
+        [field]: values[index]
+      }))
+    })
+
+    return httpResponse(HttpStatus.OK, secret)
+  } catch (error) {
+    if (error === Errors.UNAUTHORIZED) {
+      return httpResponse(HttpStatus.UNAUTHORIZED, Errors.UNAUTHORIZED)
+    } else {
+      console.error(error)
+      return httpResponse(HttpStatus.BAD_REQUEST, Errors.INTERNAL)
+    }
   }
-
-  const id = uuidv4()
-
-  await create({ id, username, password })
-
-  return httpResponse(HttpStatus.OK, { id, username, password })
 }

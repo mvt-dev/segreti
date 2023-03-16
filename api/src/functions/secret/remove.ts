@@ -1,23 +1,40 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-import { httpResponse, httpRequestData, validate, validator } from '../../libs'
-import { HttpStatus } from '../../types'
+import {
+  httpResponse,
+  httpRequestData,
+  validate,
+  validator,
+  isAuthorized
+} from '../../helpers'
+import { HttpStatus, Errors } from '../../types'
 import { remove } from '../../db/secret'
 
 export async function handler(
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
-  const data = httpRequestData(event)
+  try {
+    const user = isAuthorized(event)
 
-  const { error, id } = validate(data, {
-    id: validator.string().required()
-  })
+    const data = httpRequestData(event)
 
-  if (error) {
-    console.warn(error)
-    return httpResponse(HttpStatus.BAD_REQUEST, String(error))
+    const { error, id } = validate(data, {
+      id: validator.string().required()
+    })
+
+    if (error) {
+      console.warn(error)
+      return httpResponse(HttpStatus.UNPROCESSABLE, String(error))
+    }
+
+    await remove(id, user.id)
+
+    return httpResponse(HttpStatus.OK, { id })
+  } catch (error) {
+    if (error === Errors.UNAUTHORIZED) {
+      return httpResponse(HttpStatus.UNAUTHORIZED, Errors.UNAUTHORIZED)
+    } else {
+      console.error(error)
+      return httpResponse(HttpStatus.BAD_REQUEST, Errors.INTERNAL)
+    }
   }
-
-  await remove(id)
-
-  return httpResponse(HttpStatus.OK, { id })
 }

@@ -59,7 +59,8 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10
     },
-    userTableName: '${opt:stage}-segreti-user'
+    userTableName: '${opt:stage}-segreti-user',
+    secretTableName: '${opt:stage}-segreti-secret'
   }
 }
 

@@ -5,7 +5,7 @@ import {
   validate,
   validator,
   jwtSign
-} from '../../libs'
+} from '../../helpers'
 import { HttpStatus } from '../../types'
 import { getByEmail } from '../../db/user'
 

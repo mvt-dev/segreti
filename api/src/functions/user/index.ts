@@ -1,4 +1,4 @@
-import { handlerPath } from '../../libs'
+import { handlerPath } from '../../helpers'
 
 export const userSignup = {
   handler: `${handlerPath(__dirname)}/signup.handler`,

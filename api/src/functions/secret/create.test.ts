@@ -1,12 +1,16 @@
 import { APIGatewayProxyEvent } from 'aws-lambda'
 import { handler } from './create'
-import * as secretDb from '../../db/secret/create'
+import * as secretDb from '../../db/secret'
+import * as auth from '../../helpers/auth'
 
 describe('functions > secret > create', () => {
-  let createDbSpy: jest.SpyInstance
-
   beforeEach(() => {
-    createDbSpy = jest.spyOn(secretDb, 'create').mockResolvedValue({
+    jest.spyOn(auth, 'isAuthorized').mockResolvedValue({
+      id: 'user'
+    } as never)
+    jest.spyOn(secretDb, 'create').mockResolvedValue({
+      id: 'id',
+      user: 'user',
       username: 'username',
       password: 'password'
     } as never)
@@ -15,22 +19,18 @@ describe('functions > secret > create', () => {
   test('with valid data', async () => {
     const request = {
       body: JSON.stringify({
-        username: 'username',
-        password: 'password'
+        fields: ['username', 'password'],
+        values: ['username', 'password']
       })
     } as unknown as APIGatewayProxyEvent
 
     const response = await handler(request)
 
-    expect(createDbSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        username: 'username',
-        password: 'password'
-      })
-    )
-
     const body = JSON.parse(response.body)
 
+    expect(response.statusCode).toBe(200)
+    expect(body.id).toBe('id')
+    expect(body.user).toBe('user')
     expect(body.username).toBe('username')
     expect(body.password).toBe('password')
   })
@@ -39,7 +39,7 @@ describe('functions > secret > create', () => {
     const response = await handler({} as APIGatewayProxyEvent)
     const body = JSON.parse(response.body)
 
-    expect(response.statusCode).toBe(400)
-    expect(body.message).toBe('ValidationError: "username" is required')
+    expect(response.statusCode).toBe(422)
+    expect(body.message).toBe('ValidationError: "fields" is required')
   })
 })

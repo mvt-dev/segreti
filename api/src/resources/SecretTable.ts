@@ -1,10 +1,14 @@
 export const SecretTable = {
   Type: 'AWS::DynamoDB::Table',
   Properties: {
-    TableName: 'secret',
+    TableName: '${self:custom.secretTableName}',
     AttributeDefinitions: [
       {
         AttributeName: 'id',
+        AttributeType: 'S'
+      },
+      {
+        AttributeName: 'user',
         AttributeType: 'S'
       }
     ],
@@ -12,6 +16,10 @@ export const SecretTable = {
       {
         AttributeName: 'id',
         KeyType: 'HASH'
+      },
+      {
+        AttributeName: 'user',
+        KeyType: 'RANGE'
       }
     ],
     BillingMode: 'PAY_PER_REQUEST'

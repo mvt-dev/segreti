@@ -1,0 +1,4 @@
+export enum Errors {
+  INTERNAL = 'INTERNAL',
+  UNAUTHORIZED = 'UNAUTHORIZED'
+}

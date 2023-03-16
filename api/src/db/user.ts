@@ -1,6 +1,6 @@
 import { QueryCommand, PutCommand } from '@aws-sdk/lib-dynamodb'
 import { v4 as uuidv4 } from 'uuid'
-import { dynamo } from '../libs'
+import { dynamo } from '../helpers'
 
 const TABLE = process.env.USER_TABLE
 
