@@ -7,11 +7,11 @@ interface State {
   secrets: Secret[]
   list: () => Promise<void>
   get: (id: string) => Secret | undefined
-  create: (secret: { username: string; password: string }) => Promise<void>
+  create: (secret: { fields: string[]; values: string[] }) => Promise<void>
   update: (secret: {
     id: string
-    username: string
-    password: string
+    fields: string[]
+    values: string[]
   }) => Promise<void>
   remove: (id: string) => Promise<void>
 }
@@ -32,12 +32,12 @@ export const useSecretStore = create<State>((set, get) => ({
     }
   },
   get: (id) => get().secrets.find((secret) => secret.id === id),
-  create: async ({ username, password }) => {
-    const { data } = await api.post('secret', { username, password })
+  create: async ({ fields, values }) => {
+    const { data } = await api.post('secret', { fields, values })
     set((state) => ({ secrets: [...state.secrets, data] }))
   },
-  update: async ({ id, username, password }) => {
-    const { data } = await api.patch(`secret/${id}`, { username, password })
+  update: async ({ id, fields, values }) => {
+    const { data } = await api.patch(`secret/${id}`, { fields, values })
     set((state) => ({
       secrets: state.secrets.map((secret) => (secret.id === id ? data : secret))
     }))

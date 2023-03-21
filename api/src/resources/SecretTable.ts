@@ -22,6 +22,20 @@ export const SecretTable = {
         KeyType: 'RANGE'
       }
     ],
+    GlobalSecondaryIndexes: [
+      {
+        IndexName: 'user_index',
+        KeySchema: [
+          {
+            AttributeName: 'user',
+            KeyType: 'HASH'
+          }
+        ],
+        Projection: {
+          ProjectionType: 'ALL'
+        }
+      }
+    ],
     BillingMode: 'PAY_PER_REQUEST'
   }
 }

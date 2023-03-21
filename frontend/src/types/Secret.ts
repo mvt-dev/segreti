@@ -1,6 +1,6 @@
 export interface Secret {
   id: string
-  username: string
+  email: string
   password: string
 }
 

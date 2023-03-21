@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useAuthStore, useNotificationStore } from '@/stores'
 import { Input, Button } from '@/components'
+import { useNavigate } from 'react-router-dom'
 
 interface FormData {
   name?: string
@@ -12,6 +13,7 @@ export function Signup() {
   const [form, setForm] = useState<FormData | undefined>({})
   const { notify } = useNotificationStore()
   const { signup } = useAuthStore()
+  const navigate = useNavigate()
 
   function onChange({ name, value }: { name: string; value: string }) {
     setForm((form) => ({
@@ -28,7 +30,7 @@ export function Signup() {
         email: form?.email || '',
         password: form?.password || ''
       })
-      notify('success', 'Usuário criado com sucesso!')
+      navigate('/secret')
     } catch (error) {
       console.error(error)
       notify('error', 'Não foi possível se inscrever. Tente novamente.')

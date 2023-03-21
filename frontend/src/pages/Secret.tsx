@@ -33,15 +33,15 @@ export function Secret() {
     try {
       if (id === 'new') {
         await create({
-          username: secret?.username || '',
-          password: secret?.password || ''
+          fields: ['email', 'password'],
+          values: [secret?.username || '', secret?.password || '']
         })
         notify('success', 'Segredo criado com sucesso!')
       } else {
         await update({
           id: id || '',
-          username: secret?.username || '',
-          password: secret?.password || ''
+          fields: ['email', 'password'],
+          values: [secret?.username || '', secret?.password || '']
         })
         notify('success', 'Segredo atualizado com sucesso!')
       }

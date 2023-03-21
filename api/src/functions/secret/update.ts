@@ -31,9 +31,10 @@ export async function handler(
     const secret = await update({
       id,
       user: user.id,
-      ...fields.map((field: string, index: number) => ({
-        [field]: values[index]
-      }))
+      ...fields.reduce((acc: unknown, cur: string, index: number) => {
+        acc[cur] = values[index]
+        return acc
+      }, {})
     })
 
     return httpResponse(HttpStatus.OK, secret)

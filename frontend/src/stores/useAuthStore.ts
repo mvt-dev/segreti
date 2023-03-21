@@ -28,7 +28,6 @@ interface JwtToken extends JwtPayload {
 function login({ token, password }: { token: string; password: string }) {
   api.defaults.headers.common.Authorization = token
   const decoded = jwtDecode<JwtToken>(token)
-  console.log(decoded)
   return {
     isAuthenticated: true,
     id: decoded?.id,
@@ -39,7 +38,7 @@ function login({ token, password }: { token: string; password: string }) {
 }
 
 export const useAuthStore = create<State>((set, get) => ({
-  status: StoreStatus.IDLE,
+  status: StoreStatus.SUCCESS,
   isAuthenticated: false,
   id: null,
   name: null,
