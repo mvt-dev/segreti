@@ -10,7 +10,10 @@ interface FormData {
 }
 
 export function Signup() {
-  const [form, setForm] = useState<FormData | undefined>({})
+  const [form, setForm] = useState<FormData | undefined>({
+    email: '',
+    password: ''
+  })
   const { notify } = useNotificationStore()
   const { signup } = useAuthStore()
   const navigate = useNavigate()

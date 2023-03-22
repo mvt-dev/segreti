@@ -19,7 +19,7 @@ export function Input({
   error,
   onChange
 }: InputProps) {
-  const [text, setText] = useState(value)
+  const [text, setText] = useState('')
 
   const filled = useMemo(() => !!text, [text])
 
@@ -42,7 +42,7 @@ export function Input({
       <input
         id={name}
         name={name}
-        value={text}
+        defaultValue={value}
         type={type}
         onChange={onInputChange}
       />

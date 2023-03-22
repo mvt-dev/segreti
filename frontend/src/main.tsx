@@ -5,7 +5,8 @@ import {
   Routes,
   Route,
   Outlet,
-  useNavigate
+  useNavigate,
+  Navigate
 } from 'react-router-dom'
 import { Secrets, Secret, Signup, Signin } from './pages'
 import { Notification } from './components'
@@ -27,7 +28,12 @@ function Private({ redirect }: { redirect: string }) {
 }
 
 function App() {
+  const { init } = useAuthStore()
   const { show, type, message } = useNotificationStore()
+
+  useEffect(() => {
+    init()
+  }, [])
 
   return (
     <BrowserRouter>
@@ -39,14 +45,14 @@ function App() {
           <Route path="/secret" element={<Secrets />} />
           <Route path="/secret/:id" element={<Secret />} />
         </Route>
-        <Route path="*" element={<Signin />} />
+        <Route path="*" element={<Navigate to="/secret" replace />} />
       </Routes>
     </BrowserRouter>
   )
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  // <React.StrictMode>
+  <App />
+  // </React.StrictMode>
 )

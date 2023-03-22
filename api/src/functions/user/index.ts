@@ -31,3 +31,16 @@ export const userSignin = {
     USER_TABLE: '${self:custom.userTableName}'
   }
 }
+
+export const userToken = {
+  handler: `${handlerPath(__dirname)}/token.handler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: '/user/token',
+        cors: true
+      }
+    }
+  ]
+}
