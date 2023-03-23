@@ -2,7 +2,7 @@ import create from 'zustand'
 import CryptoJS from 'crypto-js'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { StoreStatus } from '@/types'
-import { api } from '@/libs'
+import { api } from '@/helpers'
 
 const LOCAL_STORAGE_KEY = 'segreti'
 
@@ -21,6 +21,8 @@ interface State {
   }) => Promise<void>
   signin: (user: { email: string; password: string }) => Promise<void>
   signout: () => void
+  requirePassword: () => void
+  setPassword: (password: string) => Promise<void>
 }
 
 interface JwtToken extends JwtPayload {
@@ -62,7 +64,7 @@ export const useAuthStore = create<State>((set, get) => ({
         api.defaults.headers.common.Authorization = token
         const { data } = await api.get('user/token')
         const newState = login({ token: data.token })
-        set(newState)
+        set({ ...newState, password: 'REQUIRED' })
       }
       set({ status: StoreStatus.SUCCESS })
     } catch (error) {
@@ -95,6 +97,15 @@ export const useAuthStore = create<State>((set, get) => ({
       email: null,
       password: null
     })
+  },
+  requirePassword: () => {
+    set({ password: 'REQUIRED' })
+  },
+  setPassword: async (password) => {
+    await api.post('user/password', {
+      password: CryptoJS.SHA3(password).toString()
+    })
+    set({ password })
   }
 }))
 

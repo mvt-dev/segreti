@@ -44,3 +44,19 @@ export const userToken = {
     }
   ]
 }
+
+export const userPassword = {
+  handler: `${handlerPath(__dirname)}/password.handler`,
+  events: [
+    {
+      http: {
+        method: 'post',
+        path: '/user/password',
+        cors: true
+      }
+    }
+  ],
+  environment: {
+    USER_TABLE: '${self:custom.userTableName}'
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { classes } from '../../libs'
+import { classes } from '../../helpers'
 import { ReactComponent as IconClose } from '../../assets/icons/close.svg'
 import { ReactComponent as IconSuccess } from '../../assets/icons/success.svg'
 import { ReactComponent as IconWarning } from '../../assets/icons/warning.svg'

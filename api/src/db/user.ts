@@ -1,8 +1,6 @@
-import { QueryCommand, PutCommand } from '@aws-sdk/lib-dynamodb'
+import { QueryCommand, PutCommand, GetCommand } from '@aws-sdk/lib-dynamodb'
 import { v4 as uuidv4 } from 'uuid'
 import { dynamo } from '../helpers'
-
-const TABLE = process.env.USER_TABLE
 
 interface User {
   id: string
@@ -11,10 +9,20 @@ interface User {
   password: string
 }
 
+export async function get(id: string): Promise<User | null> {
+  const result = await dynamo.send(
+    new GetCommand({
+      TableName: process.env.USER_TABLE,
+      Key: { id }
+    })
+  )
+  return (result?.Item as User) || null
+}
+
 export async function getByEmail(email: string): Promise<User | null> {
   const result = await dynamo.send(
     new QueryCommand({
-      TableName: TABLE,
+      TableName: process.env.USER_TABLE,
       IndexName: 'email_index',
       KeyConditionExpression: '#email = :v_email',
       ExpressionAttributeNames: { '#email': 'email' },
@@ -34,7 +42,7 @@ export async function create({ name, email, password }: Create): Promise<User> {
   const id = uuidv4()
   await dynamo.send(
     new PutCommand({
-      TableName: TABLE,
+      TableName: process.env.USER_TABLE,
       Item: {
         id,
         name,

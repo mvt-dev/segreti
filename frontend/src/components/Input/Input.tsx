@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { classes } from '../../libs'
+import { classes } from '../../helpers'
 import styles from './Input.module.scss'
 
 interface InputProps {

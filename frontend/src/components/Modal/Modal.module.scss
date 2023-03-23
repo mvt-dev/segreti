@@ -1,0 +1,24 @@
+@import '../../styles/variables';
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+
+  .content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: $text-color;
+    border-radius: $radius;
+    padding: $padding-y $padding-x;
+  }
+
+  &.open {
+    display: block;
+  }
+}

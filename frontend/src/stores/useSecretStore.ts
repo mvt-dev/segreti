@@ -1,6 +1,6 @@
 import create from 'zustand'
 import { StoreStatus, Secret } from '../types'
-import { api } from '../libs'
+import { api } from '../helpers'
 
 interface State {
   status: StoreStatus
