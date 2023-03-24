@@ -11,7 +11,13 @@ export async function handler(
 
     const secrets = await list(user.id)
 
-    return httpResponse(HttpStatus.OK, secrets)
+    return httpResponse(
+      HttpStatus.OK,
+      secrets.map((secret) => {
+        delete secret.user
+        return secret
+      })
+    )
   } catch (error) {
     if (error === Errors.UNAUTHORIZED) {
       return httpResponse(HttpStatus.UNAUTHORIZED, Errors.UNAUTHORIZED)

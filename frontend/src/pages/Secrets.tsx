@@ -18,7 +18,7 @@ export function Secrets() {
       {secrets.map((secret) => (
         <Item
           key={secret.id}
-          username={secret.email}
+          username={secret.name}
           onEdit={() => navigate(`/secret/${secret.id}`)}
         />
       ))}

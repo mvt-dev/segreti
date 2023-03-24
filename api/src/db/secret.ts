@@ -11,6 +11,7 @@ import { dynamo } from '../helpers'
 interface Secret {
   id?: string
   user: string
+  name: string
   [x: string]: string
 }
 

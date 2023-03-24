@@ -32,6 +32,8 @@ export async function handler(
       return httpResponse(HttpStatus.NOT_FOUND, 'Secret not found')
     }
 
+    delete secret.user
+
     return httpResponse(HttpStatus.OK, secret)
   } catch (error) {
     if (error === Errors.UNAUTHORIZED) {

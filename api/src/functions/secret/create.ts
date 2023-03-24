@@ -17,7 +17,8 @@ export async function handler(
 
     const data = httpRequestData(event)
 
-    const { error, fields, values } = validate(data, {
+    const { error, name, fields, values } = validate(data, {
+      name: validator.string().required(),
       fields: validator.array().items(validator.string()).min(1).required(),
       values: validator.array().items(validator.string()).min(1).required()
     })
@@ -29,11 +30,14 @@ export async function handler(
 
     const secret = await create({
       user: user.id,
+      name,
       ...fields.reduce((acc: unknown, cur: string, index: number) => {
         acc[cur] = values[index]
         return acc
       }, {})
     })
+
+    delete secret.user
 
     return httpResponse(HttpStatus.OK, secret)
   } catch (error) {

@@ -4,7 +4,8 @@ import { useSecretStore, useNotificationStore } from '../stores'
 import { Input, Button } from '../components'
 
 interface SecretData {
-  username?: string
+  name?: string
+  email?: string
   password?: string
 }
 
@@ -33,15 +34,17 @@ export function Secret() {
     try {
       if (id === 'new') {
         await create({
+          name: secret?.name || '',
           fields: ['email', 'password'],
-          values: [secret?.username || '', secret?.password || '']
+          values: [secret?.email || '', secret?.password || '']
         })
         notify('success', 'Segredo criado com sucesso!')
       } else {
         await update({
           id: id || '',
+          name: secret?.name || '',
           fields: ['email', 'password'],
-          values: [secret?.username || '', secret?.password || '']
+          values: [secret?.email || '', secret?.password || '']
         })
         notify('success', 'Segredo atualizado com sucesso!')
       }
@@ -67,9 +70,15 @@ export function Secret() {
     <form onSubmit={onSubmit}>
       <h1>Secret</h1>
       <Input
-        label="Username"
-        name="username"
-        value={secret?.username}
+        label="Nome"
+        name="name"
+        value={secret?.name}
+        onChange={onChange}
+      />
+      <Input
+        label="E-mail"
+        name="email"
+        value={secret?.email}
         onChange={onChange}
       />
       <Input

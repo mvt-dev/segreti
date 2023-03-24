@@ -1,8 +1,7 @@
 import create from 'zustand'
-import CryptoJS from 'crypto-js'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { StoreStatus } from '@/types'
-import { api } from '@/helpers'
+import { api, hashPassword } from '@/helpers'
 
 const LOCAL_STORAGE_KEY = 'segreti'
 
@@ -76,14 +75,14 @@ export const useAuthStore = create<State>((set, get) => ({
     const { data } = await api.post('user/signup', {
       name,
       email,
-      password: CryptoJS.SHA3(password).toString()
+      password: hashPassword(password)
     })
     set(login({ token: data.token, password }))
   },
   signin: async ({ email, password }) => {
     const { data } = await api.post('user/signin', {
       email,
-      password: CryptoJS.SHA3(password).toString()
+      password: hashPassword(password)
     })
     set(login({ token: data.token, password }))
   },
@@ -103,7 +102,7 @@ export const useAuthStore = create<State>((set, get) => ({
   },
   setPassword: async (password) => {
     await api.post('user/password', {
-      password: CryptoJS.SHA3(password).toString()
+      password: hashPassword(password)
     })
     set({ password })
   }
